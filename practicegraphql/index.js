@@ -1,6 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone"
-import { Graph } from "./model.js";
+import { Game, Graph } from "./model.js";
 import typeDefs from "./schema.js";
 
 const resolvers = {
@@ -13,6 +13,14 @@ const resolvers = {
             const findOne = await Graph.findById(args.id)
             return findOne
 
+        },
+        async games() {
+            const allGames = await Game.find({})
+            return allGames
+        },
+        async game(_, args) {
+            const findGame = await Game.findById(args.id)
+            return findGame
         }
     },
     Mutation: {
@@ -29,6 +37,19 @@ const resolvers = {
         async updateUser(_, args) {
             const updatedUser = await Graph.findByIdAndUpdate(args.id, args.user)
             return updatedUser
+        },
+        async addGame(_, args) {
+            const newGame = await Game.create(args.game)
+            const findUser = await Graph.findById(args.id)
+            findUser.games.push(newGame)
+            await findUser.save()
+            return "Game added"
+
+        },
+        async deleteGame(_, args) {
+            await Game.findByIdAndDelete(args.id)
+            return "game deleted"
+
         }
     }
 }

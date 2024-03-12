@@ -9,11 +9,24 @@ mongoose.connect("mongodb://localhost:27017/graphql")
 
 const graphSchema = new mongoose.Schema({
     name: String,
-    email: String
+    email: String,
+    games: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Game"
+        }
+    ]
+})
+
+const gameSchema = new mongoose.Schema({
+    title: String,
+    availableOn: String,
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "Graph" }
 })
 
 
 const Graph = mongoose.model("Graph", graphSchema)
+const Game = mongoose.model("Game", gameSchema)
 
 // Graph.insertMany([
 //     { name: "Shivansh", email: "Shivneeraj2004@gmail.com" },
@@ -25,4 +38,4 @@ const Graph = mongoose.model("Graph", graphSchema)
 //         console.log(data)
 //     })
 
-export { Graph }
+export { Graph, Game }
