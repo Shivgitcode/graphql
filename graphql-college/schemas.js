@@ -9,8 +9,21 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+});
+
+const courseSchema = new mongoose.Schema({
+  courseName: {
+    type: String,
+  },
+  courseDuration: {
+    type: String,
+  },
+  students: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }],
 });
 
 const Student = mongoose.model("Student", studentSchema);
+const Course = mongoose.model("Course", courseSchema);
 
-module.exports = Student;
+module.exports.Student = Student;
+module.exports.Course = Course;

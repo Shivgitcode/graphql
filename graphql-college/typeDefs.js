@@ -8,11 +8,15 @@ const typeDefs = `#graphql
 
     type Query{
         students:[Student]
+        student(id:ID!):Student
 
     }
 
     type Mutation{
         createUser(user:AddUser):String
+        updateUser(id:ID!,user:AddUser):String
+        deleteUser(id:ID!):String
+
     }
 
     input AddUser{
